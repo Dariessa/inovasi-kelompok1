@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aesthetic Islamic Scrapbook: PAI Keikhlasan (Kelas XI)</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- FontAwesome v6 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  
+  <!-- Google Fonts: Plus Jakarta Sans, Caveat, Shantell Sans, Amiri -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Caveat:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Shantell+Sans:ital,wght@0,400;0,600;0,700;1,500&display=swap" rel="stylesheet">
+  
+  <!-- Alpine.js CDN -->
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            forest: '#294936',
+            sage: '#6F8F72',
+            cream: '#F8F4E8',
+            gold: '#D6A84F',
+            peach: '#F2D5B5'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            doodle: ['"Caveat"', '"Shantell Sans"', 'cursive'],
+            handwriting: ['"Shantell Sans"', 'cursive'],
+            arabic: ['"Amiri"', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #F8F4E8;
+      background-image: 
+        linear-gradient(to right, rgba(111, 143, 114, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(111, 143, 114, 0.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+      color: #294936;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .washi-tape {
+      position: absolute;
+      height: 18px;
+      background: rgba(242, 213, 181, 0.85);
+      box-shadow: 0 1px 3px rgba(41, 73, 54, 0.1);
+      transform: rotate(-2deg);
+      z-index: 20;
+    }
+
+    .washi-tape-sage {
+      background: rgba(111, 143, 114, 0.35);
+    }
+
+    .washi-tape-gold {
+      background: rgba(214, 168, 79, 0.4);
+    }
+
+    .shadow-scrapbook {
+      box-shadow: 4px 5px 0px rgba(41, 73, 54, 0.12);
+    }
+
+    .shadow-scrapbook-btn {
+      box-shadow: 3px 4px 0px #294936;
+    }
+
+    .shadow-scrapbook-btn:active {
+      box-shadow: 1px 1px 0px #294936;
+      transform: translateY(2px) translateX(1px);
+    }
+  </style>
+</head>
+
+<body x-data="scrapbookApp()" class="min-h-screen flex flex-col justify-between selection:bg-sage selection:text-white">
+
+  <!-- ==================== TOP NAVIGATION BAR ==================== -->
+  <header class="sticky top-0 z-40 bg-[#F8F4E8]/95 backdrop-blur-md border-b-2 border-forest/15 py-3 px-4 sm:px-6">
+    <div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+      
+      <!-- Brand Button -->
+      <button @click="currentScreen = 'dashboard'" class="flex items-center gap-2.5 text-left group p-1 cursor-pointer">
+        <span class="w-9 h-9 rounded-2xl bg-forest text-white flex items-center justify-center font-bold text-sm shadow-[2px_2px_0px_#6F8F72] group-hover:rotate-6 transition-transform">
+          <i class="fa-solid fa-leaf text-xs"></i>
+        </span>
+        <div class="hidden sm:block">
+          <span class="font-bold text-base tracking-tight text-forest block leading-none">MENGUATKAN IMAN</span>
+          <span class="text-[11px] text-sage font-handwriting font-bold">Scrapbook PAI Keikhlasan</span>
+        </div>
+      </button>
+
+      <!-- Center Tabs -->
+      <nav class="hidden lg:flex items-center gap-1.5 bg-white/80 p-1.5 rounded-2xl border-2 border-forest/10">
+        <button @click="currentScreen = 'dashboard'" :class="currentScreen === 'dashboard' ? 'bg-forest text-white shadow-[2px_2px_0px_#D6A84F] -rotate-1' : 'text-forest/75 hover:bg-[#F8F4E8]'" class="px-3 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer">
+          🏠 Dashboard
+        </button>
+        <button @click="currentScreen = 'pemanasan'" :class="currentScreen === 'pemanasan' ? 'bg-forest text-white shadow-[2px_2px_0px_#D6A84F] -rotate-1' : 'text-forest/75 hover:bg-[#F8F4E8]'" class="px-3 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer">
+          🧊 Pemanasan
+        </button>
+        <button @click="currentScreen = 'materi'" :class="currentScreen === 'materi' ? 'bg-forest text-white shadow-[2px_2px_0px_#D6A84F] -rotate-1' : 'text-forest/75 hover:bg-[#F8F4E8]'" class="px-3 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer">
+          📚 Materi
+        </button>
+        <button @click="currentScreen = 'game'" :class="currentScreen === 'game' ? 'bg-forest text-white shadow-[2px_2px_0px_#D6A84F] -rotate-1' : 'text-forest/75 hover:bg-[#F8F4E8]'" class="px-3 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer">
+          🎮 Arena TGT
+        </button>
+        <button @click="currentScreen = 'kuis'" :class="currentScreen === 'kuis' ? 'bg-forest text-white shadow-[2px_2px_0px_#D6A84F] -rotate-1' : 'text-forest/75 hover:bg-[#F8F4E8]'" class="px-3 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer">
+          📝 Kuis
+        </button>
+        <button @click="currentScreen = 'refleksi'" :class="currentScreen === 'refleksi' ? 'bg-forest text-white shadow-[2px_2px_0px_#D6A84F] -rotate-1' : 'text-forest/75 hover:bg-[#F8F4E8]'" class="px-3 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer">
+          💬 Refleksi
+        </button>
+        <button @click="currentScreen = 'tugas'" :class="currentScreen === 'tugas' ? 'bg-forest text-white shadow-[2px_2px_0px_#D6A84F] -rotate-1' : 'text-forest/75 hover:bg-[#F8F4E8]'" class="px-3 py-1.5 text-xs font-semibold rounded-xl transition-all cursor-pointer">
+          📋 Tugas
+        </button>
+      </nav>
+
+      <!-- Right Controls -->
+      <div class="flex items-center gap-2">
+        <button @click="currentScreen = 'dashboard'" class="px-3 py-2 rounded-xl bg-white hover:bg-[#F8F4E8] text-forest border-2 border-forest/20 text-xs font-bold flex items-center gap-1.5 shadow-[2px_2px_0px_rgba(41,73,54,0.15)] cursor-pointer">
+          <i class="fa-solid fa-house text-sage"></i>
+          <span class="hidden sm:inline">Beranda</span>
+        </button>
+        <button @click="toggleFullscreen()" class="p-2 sm:px-3 sm:py-2 rounded-xl bg-forest hover:bg-[#203a2b] text-white text-xs font-bold shadow-[2px_2px_0px_#D6A84F] cursor-pointer">
+          <i class="fa-solid fa-expand"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==================== MAIN SCREEN CONTAINER ==================== -->
+  <main class="flex-1 flex flex-col justify-center py-6">
+
+    <!-- LAYAR 1: LANDING PAGE (COVER SCRAPBOOK) -->
+    <template x-if="currentScreen === 'hero'">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center py-8">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border-2 border-forest/20 shadow-scrapbook mb-6 -rotate-1 relative">
+          <div class="washi-tape washi-tape-gold w-14 -top-2 left-6"></div>
+          <span class="text-sm font-handwriting font-bold text-forest">🌿 PAI • AKIDAH AKHLAK</span>
+          <span class="text-gold font-bold">|</span>
+          <span class="text-xs font-mono font-bold text-sage">XI / FASE F</span>
+        </div>
+
+        <h1 class="text-3xl sm:text-5xl lg:text-6xl font-extrabold text-forest tracking-tight leading-tight mb-6">
+          MENGUATKAN IMAN <br />
+          <span class="text-sage relative inline-block">
+            DENGAN MENJAGA KEIKHLASAN
+            <svg class="w-full h-3 -mt-1 text-gold" viewBox="0 0 100 12" preserveAspectRatio="none" fill="none">
+              <path d="M0,7 Q25,12 50,7 T100,7" stroke="currentColor" stroke-width="4" stroke-linecap="round" />
+            </svg>
+          </span>
+        </h1>
+
+        <!-- Sticky Note Quote -->
+        <div class="relative inline-block my-4 max-w-lg text-left">
+          <div class="washi-tape washi-tape-sage w-24 -top-3 left-1/2 -translate-x-1/2"></div>
+          <div class="bg-[#FFFDF6] p-6 rounded-2xl border-2 border-sage/30 shadow-scrapbook rotate-[-1.5deg] hover:rotate-0 transition-transform">
+            <div class="flex items-center gap-2 mb-1.5 text-xs font-handwriting font-bold text-sage">
+              <i class="fa-solid fa-thumbtack text-gold -rotate-45"></i>
+              <span>Catatan Hikmah Hari Ini:</span>
+            </div>
+            <p class="font-doodle text-2xl sm:text-3xl text-forest leading-snug font-bold">
+              “Berbuat baik bukan untuk dilihat, tetapi karena Allah.”
+            </p>
+          </div>
+        </div>
+
+        <!-- Tombol Scrapbook Besar -->
+        <div class="mt-8 mb-6">
+          <button @click="currentScreen = 'dashboard'" class="px-10 py-4 rounded-2xl bg-forest hover:bg-[#203a2b] text-white font-extrabold text-base sm:text-lg border-2 border-forest shadow-scrapbook-btn cursor-pointer inline-flex items-center gap-3">
+            <span>🚀 MULAI PEMBELAJARAN</span>
+            <i class="fa-solid fa-arrow-right text-gold"></i>
+          </button>
+        </div>
+
+        <div class="flex items-center justify-center gap-3 text-xs sm:text-sm font-handwriting font-bold text-sage">
+          <span>🌿 Ikhlas</span>
+          <span class="text-gold">✦</span>
+          <span>Malu (Haya')</span>
+          <span class="text-gold">✦</span>
+          <span>Zuhud</span>
+        </div>
+      </div>
+    </template>
+
+    <!-- LAYAR 2: DASHBOARD UTAMA (GRID CARD ALA MOODBOARD) -->
+    <template x-if="currentScreen === 'dashboard'">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 py-6">
+        <div class="text-center mb-10">
+          <div class="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-white border-2 border-forest/15 text-forest text-xs font-handwriting font-bold mb-3 shadow-[2px_2px_0px_rgba(41,73,54,0.1)]">
+            <span>🌿 Papan Pembelajaran Interaktif</span>
+            <span class="text-gold">✦</span>
+            <span>Fase F Kelas XI</span>
+          </div>
+          <h2 class="text-2xl sm:text-4xl font-extrabold text-forest tracking-tight">
+            Hari ini kita belajar tentang <span class="text-sage underline decoration-gold decoration-wavy underline-offset-8">KEIKHLASAN</span>
+          </h2>
+          <p class="text-xs sm:text-sm font-handwriting font-semibold text-forest/80 max-w-xl mx-auto mt-2">
+            Sentuh salah satu kartu scrapbook di bawah ini untuk memulai belajar bersama:
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Card 1 -->
+          <div class="relative group">
+            <div class="washi-tape washi-tape-sage w-24 -top-2.5 left-1/2 -translate-x-1/2"></div>
+            <button @click="currentScreen = 'pemanasan'" class="w-full bg-white p-6 rounded-3xl border-2 border-forest/15 hover:border-sage shadow-scrapbook rotate-[-1.5deg] hover:rotate-0 transition-all text-left cursor-pointer flex flex-col justify-between min-h-[200px]">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-3xl">🧊</span>
+                <span class="text-[11px] font-handwriting font-bold px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-800 border border-sky-300">Apersepsi</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-forest mb-1">PEMANASAN</h3>
+                <p class="text-xs text-forest/75">Ayo mulai dengan video inspiratif & pertanyaan pemantik di kelas</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-forest/10 text-[11px] font-doodle text-sage font-bold">Buka Modul ➔</div>
+            </button>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="relative group">
+            <div class="washi-tape washi-tape-gold w-24 -top-2.5 left-1/2 -translate-x-1/2"></div>
+            <button @click="currentScreen = 'materi'" class="w-full bg-white p-6 rounded-3xl border-2 border-forest/15 hover:border-sage shadow-scrapbook rotate-[1deg] hover:rotate-0 transition-all text-left cursor-pointer flex flex-col justify-between min-h-[200px]">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-3xl">📚</span>
+                <span class="text-[11px] font-handwriting font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">Konsep & Dalil</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-forest mb-1">MATERI</h3>
+                <p class="text-xs text-forest/75">Pelajari pengertian al-Jurjani, QS. Az-Zumar: 2, 3 tingkatan & ciri Dzun Nun</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-forest/10 text-[11px] font-doodle text-sage font-bold">Buka Modul ➔</div>
+            </button>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="relative group">
+            <div class="washi-tape w-24 -top-2.5 left-1/2 -translate-x-1/2"></div>
+            <button @click="currentScreen = 'game'" class="w-full bg-white p-6 rounded-3xl border-2 border-forest/15 hover:border-sage shadow-scrapbook rotate-[-0.8deg] hover:rotate-0 transition-all text-left cursor-pointer flex flex-col justify-between min-h-[200px]">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-3xl">🎮</span>
+                <span class="text-[11px] font-handwriting font-bold px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300">Turnamen TGT</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-forest mb-1">ARENA TGT</h3>
+                <p class="text-xs text-forest/75">Turnamen kelompok ceria untuk 4 tim kelas berhadiah bintang ⭐</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-forest/10 text-[11px] font-doodle text-sage font-bold">Buka Modul ➔</div>
+            </button>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="relative group">
+            <div class="washi-tape washi-tape-sage w-24 -top-2.5 left-1/2 -translate-x-1/2"></div>
+            <button @click="currentScreen = 'kuis'" class="w-full bg-white p-6 rounded-3xl border-2 border-forest/15 hover:border-sage shadow-scrapbook rotate-[1.2deg] hover:rotate-0 transition-all text-left cursor-pointer flex flex-col justify-between min-h-[200px]">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-3xl">📝</span>
+                <span class="text-[11px] font-handwriting font-bold px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-800 border border-purple-300">Uji Mandiri</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-forest mb-1">KUIS</h3>
+                <p class="text-xs text-forest/75">Uji pemahaman mandiri secara bertahap dan raih skor tertinggi</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-forest/10 text-[11px] font-doodle text-sage font-bold">Buka Modul ➔</div>
+            </button>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="relative group">
+            <div class="washi-tape washi-tape-gold w-24 -top-2.5 left-1/2 -translate-x-1/2"></div>
+            <button @click="currentScreen = 'refleksi'" class="w-full bg-white p-6 rounded-3xl border-2 border-forest/15 hover:border-sage shadow-scrapbook rotate-[-1.2deg] hover:rotate-0 transition-all text-left cursor-pointer flex flex-col justify-between min-h-[200px]">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-3xl">💬</span>
+                <span class="text-[11px] font-handwriting font-bold px-2.5 py-0.5 rounded-full bg-teal-100 text-teal-800 border border-teal-300">Muhasabah</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-forest mb-1">REFLEKSI</h3>
+                <p class="text-xs text-forest/75">Muhasabah batin: Periksa niat dan renungkan makna amal tulus</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-forest/10 text-[11px] font-doodle text-sage font-bold">Buka Modul ➔</div>
+            </button>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="relative group">
+            <div class="washi-tape w-24 -top-2.5 left-1/2 -translate-x-1/2"></div>
+            <button @click="currentScreen = 'tugas'" class="w-full bg-white p-6 rounded-3xl border-2 border-forest/15 hover:border-sage shadow-scrapbook rotate-[0.8deg] hover:rotate-0 transition-all text-left cursor-pointer flex flex-col justify-between min-h-[200px]">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-3xl">📋</span>
+                <span class="text-[11px] font-handwriting font-bold px-2.5 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-300">Aksi Nyata</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-bold text-forest mb-1">TUGAS</h3>
+                <p class="text-xs text-forest/75">Latihan aksi nyata perilaku ikhlas di rumah dan lingkungan sekolah</p>
+              </div>
+              <div class="mt-3 pt-2 border-t border-forest/10 text-[11px] font-doodle text-sage font-bold">Buka Modul ➔</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- LAYAR 3: PEMANASAN (FEEL) -->
+    <template x-if="currentScreen === 'pemanasan'">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-scrapbook border-2 border-forest/15 text-center relative">
+          <div class="washi-tape washi-tape-sage w-32 -top-3 left-1/2 -translate-x-1/2"></div>
+
+          <div class="inline-flex items-center gap-2 text-xs font-handwriting font-bold text-sage bg-[#F8F4E8] px-3.5 py-1 rounded-full border border-sage/30 mb-3">
+            <span>🧊 PEMANASAN KELAS</span>
+          </div>
+
+          <h2 class="font-doodle text-3xl sm:text-4xl text-forest leading-snug max-w-xl mx-auto mb-4 font-bold">
+            “Pernahkah kamu membantu seseorang tanpa berharap dipuji?”
+          </h2>
+
+          <!-- Video Embed Frame Scrapbook -->
+          <div class="max-w-2xl mx-auto my-6 p-3 bg-[#F8F4E8] rounded-2xl border-2 border-forest/15 shadow-scrapbook rotate-[-0.5deg]">
+            <div class="aspect-video rounded-xl overflow-hidden bg-black">
+              <iframe :src="APP_CONFIG.pemanasanVideoUrl" class="w-full h-full" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <!-- Box Diskusi Doodle Sage -->
+          <div class="bg-[#EBF1EC] rounded-3xl p-6 border-2 border-sage/30 max-w-2xl mx-auto text-left shadow-scrapbook">
+            <span class="text-xs font-handwriting font-bold text-forest block mb-1">💬 Pertanyaan Diskusi Kelas:</span>
+            <p class="font-doodle text-2xl sm:text-3xl font-bold text-forest mb-4">
+              “Apakah kamu tetap mau berbuat baik jika tidak ada seorang pun yang melihat perbuatanmu?”
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3">
+              <button @click="pemanasanAnswer = 'ya'" :class="pemanasanAnswer === 'ya' ? 'bg-forest text-white' : 'bg-white text-forest'" class="py-2.5 px-4 rounded-xl font-bold text-xs border border-forest/20 shadow-xs cursor-pointer">
+                🌿 Ya, Tetap Mau (Lillahi Ta'ala)
+              </button>
+              <button @click="pemanasanAnswer = 'ragu'" :class="pemanasanAnswer === 'ragu' ? 'bg-gold text-forest font-extrabold' : 'bg-white text-forest'" class="py-2.5 px-4 rounded-xl font-bold text-xs border border-forest/20 shadow-xs cursor-pointer">
+                🤔 Terkadang Masih Ragu / Sulit
+              </button>
+            </div>
+          </div>
+
+          <div class="mt-8 flex justify-center gap-3">
+            <button @click="currentScreen = 'dashboard'" class="px-6 py-2.5 rounded-xl bg-[#F8F4E8] text-forest font-handwriting font-bold text-xs border border-forest/20 cursor-pointer">
+              🏠 Kembali
+            </button>
+            <button @click="currentScreen = 'materi'" class="px-8 py-2.5 rounded-xl bg-forest text-white font-extrabold text-xs shadow-scrapbook-btn border-2 border-forest cursor-pointer">
+              Lanjut ke Materi ➔
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- LAYAR 4: MATERI UTAMA (IMAGINE) -->
+    <template x-if="currentScreen === 'materi'">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6" x-data="{ materiTab: 'pengertian' }">
+        <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-scrapbook border-2 border-forest/15 relative">
+          <div class="washi-tape washi-tape-gold w-32 -top-3 left-1/2 -translate-x-1/2"></div>
+
+          <!-- Stiker Sub-menu Tabs -->
+          <div class="flex flex-wrap items-center justify-center gap-2 mb-8">
+            <button @click="materiTab = 'pengertian'" :class="materiTab === 'pengertian' ? 'bg-forest text-white shadow-xs -rotate-1' : 'bg-[#F8F4E8] text-forest'" class="px-4 py-2 rounded-2xl font-handwriting font-bold text-xs border border-forest/20 cursor-pointer transition-all">
+              📖 Pengertian
+            </button>
+            <button @click="materiTab = 'dalil'" :class="materiTab === 'dalil' ? 'bg-forest text-white shadow-xs rotate-1' : 'bg-[#F8F4E8] text-forest'" class="px-4 py-2 rounded-2xl font-handwriting font-bold text-xs border border-forest/20 cursor-pointer transition-all">
+              📜 Dalil Az-Zumar: 2
+            </button>
+            <button @click="materiTab = 'tingkatan'" :class="materiTab === 'tingkatan' ? 'bg-forest text-white shadow-xs -rotate-1' : 'bg-[#F8F4E8] text-forest'" class="px-4 py-2 rounded-2xl font-handwriting font-bold text-xs border border-forest/20 cursor-pointer transition-all">
+              🌱 3 Tingkatan
+            </button>
+            <button @click="materiTab = 'ciri'" :class="materiTab === 'ciri' ? 'bg-forest text-white shadow-xs rotate-1' : 'bg-[#F8F4E8] text-forest'" class="px-4 py-2 rounded-2xl font-handwriting font-bold text-xs border border-forest/20 cursor-pointer transition-all">
+              ✨ 3 Ciri Dzun Nun
+            </button>
+            <button @click="materiTab = 'manfaat'" :class="materiTab === 'manfaat' ? 'bg-forest text-white shadow-xs -rotate-1' : 'bg-[#F8F4E8] text-forest'" class="px-4 py-2 rounded-2xl font-handwriting font-bold text-xs border border-forest/20 cursor-pointer transition-all">
+              🛡️ Manfaat Ikhlas
+            </button>
+          </div>
+
+          <!-- Tab Content 1: Pengertian -->
+          <div x-show="materiTab === 'pengertian'" class="space-y-4">
+            <h3 class="text-xl font-bold text-forest">Pengertian Keikhlasan</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="bg-[#FFFDF6] p-5 rounded-2xl border-2 border-forest/15 shadow-xs -rotate-0.5">
+                <span class="text-xs font-handwriting font-bold text-sage uppercase block mb-1">🌿 Secara Bahasa</span>
+                <p class="text-xs leading-relaxed">Berasal dari bahasa Arab: <strong>murni, tidak bercampur, bersih, jernih, mengosongkan dan membersihkan sesuatu</strong>. Dalam ibadah: <em>tidak memperlihatkan amal kepada orang lain</em>.</p>
+              </div>
+              <div class="bg-[#FFFDF6] p-5 rounded-2xl border-2 border-forest/15 shadow-xs rotate-0.5">
+                <span class="text-xs font-handwriting font-bold text-sage uppercase block mb-1">📜 Istilah (al-Jurjani dalam al-Ta'rifat)</span>
+                <p class="text-xs leading-relaxed italic">“Membersihkan amal perbuatan dari hal-hal yang mengotorinya seperti mengharap pujian makhluk atau tujuan-tujuan lain selain dari Allah...”</p>
+              </div>
+            </div>
+            <div class="bg-forest p-4 rounded-2xl text-white text-xs leading-relaxed">
+              💎 <strong>Hakikat Batiniah:</strong> Ikhlas merupakan perasaan halus batiniah yang tidak dapat diketahui oleh siapa pun kecuali pelakunya dan Allah SWT.
+            </div>
+          </div>
+
+          <!-- Tab Content 2: Dalil -->
+          <div x-show="materiTab === 'dalil'" class="space-y-4">
+            <h3 class="text-xl font-bold text-forest">Q.S. Az-Zumar/39: Ayat 2</h3>
+            <div class="bg-[#FFFDF6] p-6 rounded-3xl border-2 border-forest/15 text-center shadow-xs">
+              <div class="font-arabic text-2xl sm:text-3xl leading-loose mb-3" dir="rtl">
+                اِنَّآ اَنْزَلْنَآ اِلَيْكَ الْكِتٰبَ بِالْحَقِّ فَاعْبُدِ اللّٰهَ مُخْلِصًا لَّهُ الدِّيْنَ ۗ ٢
+              </div>
+              <p class="text-xs italic bg-[#F8F4E8] p-3 rounded-xl border border-forest/15">
+                “Sesungguhnya Kami telah menurunkan kepadamu (Muhammad) al-Kitab (al-Qur'an) dengan benar, maka sembahlah Allah dengan memurnikan ketaatan (ibadah) kepada-Nya.” (Q.S. Az-Zumar/39: 2)
+              </p>
+            </div>
+            <div class="aspect-video rounded-xl overflow-hidden bg-black max-w-xl mx-auto shadow-xs">
+              <iframe :src="APP_CONFIG.dalilVideoUrl" class="w-full h-full" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <!-- Tab Content 3: 3 Tingkatan -->
+          <div x-show="materiTab === 'tingkatan'" class="space-y-3">
+            <h3 class="text-xl font-bold text-forest">3 Tingkatan Ikhlas (Ali Abdul Halim, 2010)</h3>
+            <div class="bg-[#FFFDF6] p-4 rounded-2xl border-l-4 border-l-sage border border-forest/15 text-xs">
+              <strong>a. Orang Awam (Umum):</strong> Beribadah mencari/menghitung keuntungan dunia & akhirat (contoh: shalat agar sehat, banyak harta, dan masuk surga).
+            </div>
+            <div class="bg-[#FFFDF6] p-4 rounded-2xl border-l-4 border-l-gold border border-forest/15 text-xs">
+              <strong>b. Orang Khawash (Khusus):</strong> Beribadah hanya mencari keuntungan akhirat (mengharap pahala, surga, keselamatan akhirat).
+            </div>
+            <div class="bg-[#FFFDF6] p-4 rounded-2xl border-l-4 border-l-forest border border-forest/15 text-xs">
+              <strong>c. Orang Khawashul Khawas (Excellent):</strong> Beribadah tanpa motivasi apa pun kecuali ridha Allah. Didasari rasa <em>mahabbah</em> (cinta) dan rindu kepada Allah.
+            </div>
+          </div>
+
+          <!-- Tab Content 4: Ciri Dzun Nun -->
+          <div x-show="materiTab === 'ciri'" class="space-y-3">
+            <h3 class="text-xl font-bold text-forest">Cara & 3 Ciri Ikhlas (Imam Dzun Nun)</h3>
+            <p class="text-xs bg-[#F8F4E8] p-3 rounded-xl"><strong>Cara Memiliki:</strong> Bersungguh-sungguh (mujahadah), sabar, serta terus-menerus/istiqamah dalam beramal sehingga terbiasa berbuat baik.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+              <div class="bg-[#FFFDF6] p-4 rounded-2xl border border-forest/15">
+                <strong>1. Kebal Pujian & Hinaan:</strong> Tidak lagi mengharap atau menghiraukan pujian dan celaan orang lain.
+              </div>
+              <div class="bg-[#FFFDF6] p-4 rounded-2xl border border-forest/15">
+                <strong>2. Fokus Hakikat Perbuatan:</strong> Memandang amal adalah perintah Allah, bukan mengejar manfaat ego.
+              </div>
+              <div class="bg-[#FFFDF6] p-4 rounded-2xl border border-forest/15">
+                <strong>3. Melupakan Pahala:</strong> Tidak mengingat-ingat pahala amal yang telah dikerjakan.
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Content 5: Manfaat -->
+          <div x-show="materiTab === 'manfaat'" class="space-y-3">
+            <h3 class="text-xl font-bold text-forest">Manfaat Memiliki Sikap Ikhlas</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+              <div class="bg-[#FFFDF6] p-5 rounded-2xl border-2 border-forest/15 border-l-8 border-l-sage shadow-xs">
+                🛡️ <strong>Terhindar dari Tipu Daya Setan:</strong> Selamat dari berbagai macam godaan iblis yang menjauhkan diri dari petunjuk agama.
+              </div>
+              <div class="bg-[#FFFDF6] p-5 rounded-2xl border-2 border-forest/15 border-l-8 border-l-gold shadow-xs">
+                👑 <strong>Selamat dari Siksa & Derajat Tinggi:</strong> Meraih ampunan, diselamatkan dari azab, dan memperoleh kedudukan mulia di akhirat.
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-8 flex justify-between pt-4 border-t border-forest/10">
+            <button @click="currentScreen = 'dashboard'" class="px-6 py-2.5 rounded-xl bg-[#F8F4E8] text-forest font-handwriting font-bold text-xs cursor-pointer">
+              🏠 Menu Dashboard
+            </button>
+            <button @click="currentScreen = 'game'" class="px-8 py-2.5 rounded-xl bg-forest text-white font-extrabold text-xs shadow-scrapbook-btn border-2 border-forest cursor-pointer">
+              Lanjut ke Arena TGT ➔
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- LAYAR 5: TURNAMEN TGT (ARENA IKHLAS) -->
+    <template x-if="currentScreen === 'game'">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6" x-data="{
+        scores: { tim1: 20, tim2: 15, tim3: 25, tim4: 20 },
+        tgtIdx: 0,
+        tgtAnswered: false,
+        tgtQuestions: [
+          { q: 'Secara bahasa, ikhlas berasal dari bahasa Arab yang berarti...', a: 'Murni, bersih, tidak bercampur kotoran', opt: ['Murni, bersih, tidak bercampur kotoran', 'Pamer di media sosial', 'Mencari imbalan hadiah', 'Menyembunyikan ilmu'], correct: 0 },
+          { q: 'Perintah memurnikan ketaatan dalam beribadah terdapat dalam...', a: 'Q.S. Az-Zumar/39: 2', opt: ['Q.S. Az-Zumar/39: 2', 'Q.S. Al-Baqarah: 183', 'Q.S. Al-Ikhlas: 1', 'Q.S. An-Nas: 3'], correct: 0 },
+          { q: 'Tingkatan ikhlas tertinggi menurut Ali Abdul Halim yang didasari rasa mahabbah adalah...', a: 'Orang Khawashul Khawas', opt: ['Orang Awam', 'Orang Khawash', 'Orang Khawashul Khawas', 'Orang Munafik'], correct: 2 }
+        ]
+      }">
+        <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-scrapbook border-2 border-forest/15 text-center relative">
+          <div class="washi-tape washi-tape-gold w-36 -top-3 left-1/2 -translate-x-1/2"></div>
+
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-forest mb-1">🏆 ARENA IKHLAS (TGT)</h2>
+          <p class="text-xs font-handwriting font-bold text-sage mb-6">Papan Nilai Turnamen Kelompok Kelas XI</p>
+
+          <!-- Papan Skor 4 Tim -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+            <div class="bg-[#EBF1EC] p-4 rounded-2xl border-2 border-forest/15 shadow-xs -rotate-1">
+              <div class="font-bold text-xs text-forest">TIM 1 (Hijau)</div>
+              <div class="text-2xl font-mono font-extrabold text-forest my-1"><span x-text="scores.tim1"></span> ⭐</div>
+              <div class="flex justify-center gap-1">
+                <button @click="scores.tim1 = Math.max(0, scores.tim1 - 5)" class="w-6 h-6 bg-white rounded text-xs font-bold">-</button>
+                <button @click="scores.tim1 += 5" class="w-6 h-6 bg-white rounded text-xs font-bold">+</button>
+              </div>
+            </div>
+            <div class="bg-sky-50 p-4 rounded-2xl border-2 border-forest/15 shadow-xs rotate-1">
+              <div class="font-bold text-xs text-forest">TIM 2 (Biru)</div>
+              <div class="text-2xl font-mono font-extrabold text-forest my-1"><span x-text="scores.tim2"></span> ⭐</div>
+              <div class="flex justify-center gap-1">
+                <button @click="scores.tim2 = Math.max(0, scores.tim2 - 5)" class="w-6 h-6 bg-white rounded text-xs font-bold">-</button>
+                <button @click="scores.tim2 += 5" class="w-6 h-6 bg-white rounded text-xs font-bold">+</button>
+              </div>
+            </div>
+            <div class="bg-amber-50 p-4 rounded-2xl border-2 border-forest/15 shadow-xs -rotate-1">
+              <div class="font-bold text-xs text-forest">TIM 3 (Oranye)</div>
+              <div class="text-2xl font-mono font-extrabold text-forest my-1"><span x-text="scores.tim3"></span> ⭐</div>
+              <div class="flex justify-center gap-1">
+                <button @click="scores.tim3 = Math.max(0, scores.tim3 - 5)" class="w-6 h-6 bg-white rounded text-xs font-bold">-</button>
+                <button @click="scores.tim3 += 5" class="w-6 h-6 bg-white rounded text-xs font-bold">+</button>
+              </div>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-2xl border-2 border-forest/15 shadow-xs rotate-1">
+              <div class="font-bold text-xs text-forest">TIM 4 (Ungu)</div>
+              <div class="text-2xl font-mono font-extrabold text-forest my-1"><span x-text="scores.tim4"></span> ⭐</div>
+              <div class="flex justify-center gap-1">
+                <button @click="scores.tim4 = Math.max(0, scores.tim4 - 5)" class="w-6 h-6 bg-white rounded text-xs font-bold">-</button>
+                <button @click="scores.tim4 += 5" class="w-6 h-6 bg-white rounded text-xs font-bold">+</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pertanyaan Turnamen -->
+          <div class="bg-[#FFFDF6] p-6 rounded-3xl border-2 border-forest/15 text-left shadow-xs mb-6">
+            <span class="text-xs font-handwriting font-bold text-sage">Soal Turnamen:</span>
+            <h3 class="text-base sm:text-lg font-bold text-forest my-3" x-text="tgtQuestions[tgtIdx].q"></h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <template x-for="(opt, i) in tgtQuestions[tgtIdx].opt" :key="i">
+                <button @click="tgtAnswered = true" class="p-3.5 rounded-xl border-2 border-forest/15 hover:bg-[#F8F4E8] text-xs font-semibold text-left transition-all cursor-pointer">
+                  <span class="font-bold mr-1" x-text="['A','B','C','D'][i] + '.'"></span>
+                  <span x-text="opt"></span>
+                </button>
+              </template>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <button @click="currentScreen = 'dashboard'" class="px-6 py-2.5 rounded-xl bg-[#F8F4E8] text-forest font-handwriting font-bold text-xs cursor-pointer">
+              🏠 Dashboard
+            </button>
+            <button @click="currentScreen = 'kuis'" class="px-8 py-2.5 rounded-xl bg-forest text-white font-extrabold text-xs shadow-scrapbook-btn border-2 border-forest cursor-pointer">
+              Lanjut ke Kuis ➔
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- LAYAR 6: KUIS INDIVIDU -->
+    <template x-if="currentScreen === 'kuis'">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 py-6" x-data="{
+        qIdx: 0,
+        answered: false,
+        userScore: 85,
+        quizDone: false,
+        qList: [
+          { q: 'Apa pengertian ikhlas menurut al-Jurjani dalam kitab al-Ta\'rifat?', opt: ['Membersihkan amal dari hal yang mengotorinya seperti pujian makhluk', 'Menyimpan harta tanpa sedekah', 'Beramal agar terkenal', 'Menceritakan kebaikan semalam'], correct: 0 },
+          { q: 'Ciri orang ikhlas menurut Imam Dzun Nun adalah...', opt: ['Tidak lagi menghiraukan pujian dan hinaan orang lain', 'Sangat senang bila dipuji teman', 'Mengingat-ingat pahala amal', 'Hanya beramal bila ada hadiah'], correct: 0 }
+        ]
+      }">
+        <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-scrapbook border-2 border-forest/15 text-center relative">
+          <div class="washi-tape washi-tape-sage w-32 -top-3 left-1/2 -translate-x-1/2"></div>
+
+          <template x-if="!quizDone">
+            <div>
+              <span class="text-xs font-handwriting font-bold text-sage">📝 KUIS INDIVIDU</span>
+              <h3 class="text-lg font-bold text-forest my-4" x-text="qList[qIdx].q"></h3>
+              <div class="space-y-3 text-left max-w-xl mx-auto mb-6">
+                <template x-for="(item, idx) in qList[qIdx].opt" :key="idx">
+                  <button @click="answered = true" class="w-full p-4 rounded-2xl border-2 border-forest/15 hover:bg-[#F8F4E8] text-xs font-medium text-left cursor-pointer transition-all">
+                    <span class="font-bold mr-1" x-text="['A','B','C','D'][idx] + '.'"></span>
+                    <span x-text="item"></span>
+                  </button>
+                </template>
+              </div>
+              <button @click="if (qIdx < qList.length - 1) { qIdx++; answered = false; } else { quizDone = true; }" class="px-8 py-3 rounded-2xl bg-forest text-white font-extrabold text-xs shadow-scrapbook-btn border-2 border-forest cursor-pointer">
+                Soal Selanjutnya ➔
+              </button>
+            </div>
+          </template>
+
+          <template x-if="quizDone">
+            <div class="py-4">
+              <div class="text-5xl mb-2">🎉</div>
+              <h3 class="text-2xl font-extrabold text-forest">KUIS SELESAI</h3>
+              <div class="my-4 p-5 bg-[#F8F4E8] rounded-2xl max-w-xs mx-auto border border-forest/15">
+                <div class="text-4xl font-mono font-bold text-forest">85 / 100</div>
+                <p class="font-doodle text-xl text-sage font-bold mt-1">“Terus belajar dan perbaiki niatmu.”</p>
+              </div>
+              <button @click="currentScreen = 'refleksi'" class="px-8 py-3 rounded-2xl bg-forest text-white font-extrabold text-xs shadow-scrapbook-btn border-2 border-forest cursor-pointer">
+                Lanjut ke Refleksi ➔
+              </button>
+            </div>
+          </template>
+        </div>
+      </div>
+    </template>
+
+    <!-- LAYAR 7: REFLEKSI DIRI (SHARE) -->
+    <template x-if="currentScreen === 'refleksi'">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6" x-data="{ refleksiText: '' }">
+        <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-scrapbook border-2 border-forest/15 relative">
+          <div class="washi-tape washi-tape-gold w-32 -top-3 left-1/2 -translate-x-1/2"></div>
+
+          <h2 class="text-2xl font-extrabold text-forest text-center mb-1">💭 REFLEKSI DIRI</h2>
+          <p class="text-xs font-handwriting font-bold text-sage text-center mb-6">Lembar Jurnal Muhasabah Pribadi</p>
+
+          <div class="bg-[#FFFDF6] p-6 rounded-3xl border-2 border-forest/15 shadow-scrapbook mb-6">
+            <h3 class="font-doodle text-2xl font-bold text-forest mb-2">
+              “Tadi kamu bermain di Arena TGT karena ingin menang atau ingin belajar bersama?”
+            </h3>
+            <p class="text-xs text-forest/75 mb-4">Dan apa satu hal tentang keikhlasan yang ingin kamu terapkan mulai hari ini?</p>
+            <textarea x-model="refleksiText" rows="4" placeholder="Tuliskan refleksimu di sini..." class="w-full p-4 rounded-2xl bg-[#F8F4E8] border-2 border-sage/30 text-xs text-forest focus:outline-none mb-3"></textarea>
+            
+            <div class="flex flex-wrap justify-between items-center gap-2">
+              <span class="text-xs text-sage font-handwriting font-bold">Jawaban tersimpan di layar Smartboard</span>
+              <a :href="APP_CONFIG.refleksiFormUrl" target="_blank" class="text-xs font-bold text-forest underline font-handwriting">
+                Kirim via Google Form ↗
+              </a>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center">
+            <button @click="currentScreen = 'dashboard'" class="px-6 py-2.5 rounded-xl bg-[#F8F4E8] text-forest font-handwriting font-bold text-xs cursor-pointer">
+              🏠 Dashboard
+            </button>
+            <button @click="currentScreen = 'tugas'" class="px-8 py-2.5 rounded-xl bg-forest text-white font-extrabold text-xs shadow-scrapbook-btn border-2 border-forest cursor-pointer">
+              Lanjut ke Tugas ➔
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+
+    <!-- LAYAR 8: TUGAS INDIVIDU (DO) -->
+    <template x-if="currentScreen === 'tugas'">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 py-6">
+        <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-scrapbook border-2 border-forest/15 relative">
+          <div class="washi-tape washi-tape-sage w-32 -top-3 left-1/2 -translate-x-1/2"></div>
+
+          <h2 class="text-2xl font-extrabold text-forest text-center mb-1">📋 TUGAS INDIVIDU</h2>
+          <p class="font-doodle text-2xl text-sage text-center font-bold mb-6">“Saatnya menerapkan apa yang sudah dipelajari.”</p>
+
+          <div class="space-y-4 mb-6">
+            <div class="bg-[#FFFDF6] p-5 rounded-2xl border-2 border-forest/15 shadow-xs -rotate-0.5">
+              <strong class="text-xs text-forest block mb-1">🏠 DI RUMAH:</strong>
+              <p class="text-xs text-forest/80">Tuliskan 2 contoh perilaku ikhlas dalam membantu keluarga tanpa pamrih.</p>
+            </div>
+            <div class="bg-[#FFFDF6] p-5 rounded-2xl border-2 border-forest/15 shadow-xs rotate-0.5">
+              <strong class="text-xs text-forest block mb-1">🏫 DI SEKOLAH:</strong>
+              <p class="text-xs text-forest/80">Tuliskan 2 contoh perilaku ikhlas dalam piket kelas atau membantu teman.</p>
+            </div>
+            <div class="bg-[#FFFDF6] p-5 rounded-2xl border-2 border-forest/15 shadow-xs -rotate-0.5">
+              <strong class="text-xs text-forest block mb-1">🤔 SITUASI & PERBAIKAN NIAT:</strong>
+              <p class="text-xs text-forest/80">Pernahkah kamu ingin dipuji setelah berbuat baik? Bagaimana cara memperbaiki niat tersebut?</p>
+            </div>
+          </div>
+
+          <div class="text-center pt-4 border-t border-forest/10 flex flex-col sm:flex-row justify-center gap-3">
+            <button @click="currentScreen = 'dashboard'" class="px-6 py-3 rounded-2xl bg-[#F8F4E8] text-forest font-handwriting font-bold text-xs border border-forest/20 cursor-pointer">
+              🏠 Kembali ke Dashboard
+            </button>
+            <a :href="APP_CONFIG.tugasFormUrl" target="_blank" class="px-8 py-3.5 rounded-2xl bg-gold hover:bg-[#c49842] text-forest font-extrabold text-xs shadow-scrapbook-btn border-2 border-forest flex items-center justify-center gap-2">
+              <span>[ 📝 KERJAKAN DI GOOGLE FORM ]</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </template>
+
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="py-4 px-6 border-t border-forest/10 text-center text-xs text-forest/60 font-sans">
+    🌿 PAI & Akidah Akhlak · Kelas XI / Fase F · Aesthetic Islamic Scrapbook Edition
+  </footer>
+
+  <!-- ==================== JAVASCRIPT & CONFIG ==================== -->
+  <script>
+    // 2. CONFIG VARIABLE (SANGAT EASY TO EDIT)
+    const APP_CONFIG = {
+      pemanasanVideoUrl: "https://www.youtube.com/embed/L_LupnpqC-E",
+      dalilVideoUrl: "https://www.youtube.com/embed/o5oJ0_N60u8",
+      kuisGoogleFormUrl: "https://forms.google.com",
+      refleksiFormUrl: "https://forms.google.com",
+      tugasFormUrl: "https://forms.google.com"
+    };
+
+    function scrapbookApp() {
+      return {
+        currentScreen: 'hero',
+        pemanasanAnswer: null,
+        toggleFullscreen() {
+          if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          } else {
+            if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>

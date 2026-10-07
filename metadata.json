@@ -1,0 +1,6 @@
+{
+  "name": "Media Pembelajaran Interaktif PAI: Keikhlasan (Kelas XI)",
+  "description": "Website Pembelajaran Interaktif PAI Kelas XI / Fase F Materi Keikhlasan untuk Smartboard dan Proyektor Kelas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
